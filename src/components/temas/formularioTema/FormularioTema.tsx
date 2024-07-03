@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useContext, useEffect, useState } from 'react';
+import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AuthContext } from '../../../contexts/AuthContext';
 import Tema from '../../../models/Tema';
@@ -7,12 +7,12 @@ import { atualizar, buscar, cadastrar } from '../../../services/Service';
 function FormularioTema() {
   const [tema, setTema] = useState<Tema>({} as Tema);
 
+  const { usuario, handleLogout } = useContext(AuthContext);
+  const token = usuario.token;
+
   let navigate = useNavigate();
 
   const { id } = useParams<{ id: string }>();
-
-  const { usuario, handleLogout } = useContext(AuthContext);
-  const token = usuario.token;
 
   async function buscarPorId(id: string) {
     await buscar(`/temas/${id}`, setTema, {
@@ -24,103 +24,100 @@ function FormularioTema() {
 
   useEffect(() => {
     if (id !== undefined) {
-      buscarPorId(id)
+      buscarPorId(id);
     }
-  }, [id])
-
-  function atualizarEstado(e: ChangeEvent<HTMLInputElement>) {
-    setTema({
-      ...tema,
-      [e.target.name]: e.target.value
-    })
-
-    console.log(JSON.stringify(tema))
-  }
-
-  async function gerarNovoTema(e: ChangeEvent<HTMLFormElement>) {
-    e.preventDefault()
-
-    if (id !== undefined) {
-      try {
-        await atualizar(`/temas`, tema, setTema, {
-          headers: {
-            'Authorization': token
-          }
-        })
-
-        alert('Tema atualizado com sucesso')
-        retornar()
-
-      } catch (error: any) {
-        if (error.toString().includes('403')) {
-          alert('O token expirou, favor logar novamente')
-          handleLogout()
-        } else {
-          alert('Erro ao atualizar o Tema')
-        }
-
-      }
-
-    } else {
-      try {
-        await cadastrar(`/temas`, tema, setTema, {
-          headers: {
-            'Authorization': token
-          }
-        })
-
-        alert('Tema cadastrado com sucesso')
-
-      } catch (error: any) {
-        if (error.toString().includes('403')) {
-          alert('O token expirou, favor logar novamente')
-          handleLogout()
-        } else {
-          alert('Erro ao cadastrado o Tema')
-        }
-      }
-    }
-
-    retornar()
-  }
-
-  function retornar() {
-    navigate("/temas")
-  }
+  }, [id]);
 
   useEffect(() => {
     if (token === '') {
-      alert('Você precisa estar logado');
+      //voltar pro login
+      alert('Ta tirando...');
       navigate('/login');
     }
   }, [token]);
 
-  return (
-    <div className="container flex flex-col items-center justify-center mx-auto">
-      <h1 className="text-4xl text-center my-8">
-        {id === undefined ? 'Cadastre um novo tema' : 'Editar tema'}
-      </h1>
+  function atualizarEstado(e: ChangeEvent<HTMLInputElement>) {
+    setTema({
+      ...tema,
+      [e.target.name]: e.target.value,
+    });
+  }
 
-      <form className="w-1/2 flex flex-col gap-4" onSubmit={gerarNovoTema}>
-        <div className="flex flex-col gap-2">
-          <label htmlFor="descricao">Descrição do tema</label>
-          <input
-            type="text"
-            placeholder="Descrição"
-            name='descricao'
-            className="border-2 border-slate-700 rounded p-2"
-            value={tema.descricao}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => atualizarEstado(e)}
-          />
-        </div>
-        <button
-          className="rounded text-slate-100 bg-indigo-400 hover:bg-indigo-800 w-1/2 py-2 mx-auto block"
-          type="submit"
-        >
-          {id === undefined ? 'Cadastrar' : 'Editar'}
-        </button>
-      </form>
-    </div>
+  async function gerarNovoTema(e: ChangeEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    if (id !== undefined) {
+      try {
+        await atualizar('/temas', tema, setTema, {
+          headers: {
+            Authorization: token,
+          },
+        });
+        alert('Tema atualizado');
+        retornar();
+      } catch (error: any) {
+        //não faço ideia do q é o toString
+        if (error.toString().includes('403')) {
+          alert('Token vencido, loga denovo');
+          handleLogout();
+        } else {
+          alert('Erro ao atualizar o tema');
+        }
+      }
+    } else {
+      try {
+        await cadastrar('/temas', tema, setTema, {
+          headers: {
+            Authorization: token,
+          },
+        });
+        alert('Tema cadastrado');
+        retornar();
+      } catch (error: any) {
+        if (error.toString().includes('403')) {
+          alert('Token vencido, loga denovo');
+          handleLogout();
+        } else {
+          alert('Erro ao cadastrar o tema');
+        }
+      }
+    }
+  }
+
+  function retornar() {
+    navigate('/temas');
+  }
+
+  return (
+    <>
+      <div className="container mx-auto">
+        <h1 className="text-center my-8 text-4xl">
+          {id === undefined ? 'Cadastrar novo tema' : 'Atualizar tema'}
+        </h1>
+
+        <form onSubmit={gerarNovoTema} className="mx-auto w-1/2">
+          <div className="flex flex-col gap-2 mb-4">
+            <label htmlFor="descricao">Descrição do tema</label>
+            <input
+              type="text"
+              className="border-2 border-slate-700 rounded-lg p-2"
+              id="descricao"
+              name="descricao"
+              value={tema.descricao}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                atualizarEstado(e)
+              }
+            />
+          </div>
+          <button
+            className="bg-indigo-400 hover:bg-indigo-800 rounded-lg w-1/2 mx-auto block py-2 text-white"
+            type="submit"
+          >
+            {id === undefined ? 'Cadastrar' : 'Atualizar'}
+          </button>
+        </form>
+      </div>
+    </>
   );
 }
 
