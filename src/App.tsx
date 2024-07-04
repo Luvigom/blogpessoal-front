@@ -14,26 +14,28 @@ import FormularioPostagem from './components/postagens/formularioPostagem/Formul
 import ListaPostagens from './components/postagens/listaPostagens/ListaPostagens';
 
 function App() {
+  
   return (
     <>
       <AuthProvider>
-        {/* agora você sabe que eu vou usar navegação */}
+      <ToastContainer />
         <BrowserRouter>
-          {/* aqui são as rotas possiveis pro usuario */}
-          <Navbar />
-          <div className="min-h-[80vh]">
+        <Navbar />
+          <div className='min-h-[80vh]'>
             <Routes>
               <Route path="/" element={<Login />} />
               <Route path="/login" element={<Login />} />
-              <Route path="/home" element={<Home />} />
               <Route path="/cadastro" element={<Cadastro />} />
+              <Route path="/home" element={<Home />} />
               <Route path="/temas" element={<ListaTemas />} />
-              <Route path="/formularioTema" element={<FormularioTema />} />
+              <Route path="/cadastroTema" element={<FormularioTema />} />
               <Route path="/editarTema/:id" element={<FormularioTema />} />
               <Route path="/deletarTema/:id" element={<DeletarTema />} />
               <Route path="/postagens" element={<ListaPostagens />} />
               <Route path="/cadastroPostagem" element={<FormularioPostagem />} />
               <Route path="/editarPostagem/:id" element={<FormularioPostagem />} />
+              <Route path="/deletarPostagem/:id" element={<DeletarPostagem />} />
+              <Route path="/perfil" element={<Perfil />} />
             </Routes>
           </div>
           <Footer />
