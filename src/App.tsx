@@ -12,6 +12,9 @@ import FormularioTema from './components/temas/formularioTema/FormularioTema';
 import DeletarTema from './components/temas/deletarTema/DeletarTema';
 import FormularioPostagem from './components/postagens/formularioPostagem/FormularioPostagem';
 import ListaPostagens from './components/postagens/listaPostagens/ListaPostagens';
+import { ToastContainer } from 'react-toastify';
+import DeletarPostagem from './components/postagens/deletarPostagem/DeletarPostagem';
+import Perfil from './paginas/perfil/Perfil';
 
 function App() {
   

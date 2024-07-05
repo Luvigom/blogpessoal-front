@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Usuario from '../../models/Usuario';
 import { cadastrarUsuario } from '../../services/Service';
 import './Cadastro.css';
+import { toastAlerta } from '../../utils/toastAlerta';
 
 function Cadastro() {
 
@@ -55,6 +56,7 @@ function Cadastro() {
       try {
         await cadastrarUsuario(`/usuarios/cadastrar`, usuario, setUsuarioResposta)
         toastAlerta('Usuário cadastrado com sucesso', 'sucesso')
+
 
       } catch (error) {
         toastAlerta('Usuário cadastrado com sucesso', 'sucesso')
