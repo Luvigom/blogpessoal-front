@@ -15,6 +15,7 @@ import ListaPostagens from './components/postagens/listaPostagens/ListaPostagens
 import { ToastContainer } from 'react-toastify';
 import DeletarPostagem from './components/postagens/deletarPostagem/DeletarPostagem';
 import Perfil from './paginas/perfil/Perfil';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   
