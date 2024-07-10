@@ -5,7 +5,7 @@ interface CardPostagemProps {
   postagem: Postagem;
 }
 
-function CardPostagem({ postagem }: CardPostagemProps) {
+function CardPostagens({ postagem }: CardPostagemProps) {
   return (
     <div className="border-black border rounded overflow-hidden">
       <div className="bg-indigo-400 flex items-center gap-8">
@@ -39,4 +39,4 @@ function CardPostagem({ postagem }: CardPostagemProps) {
   );
 }
 
-export default CardPostagem;
+export default CardPostagens;

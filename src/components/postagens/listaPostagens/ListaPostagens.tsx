@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../contexts/AuthContext';
 import Postagem from '../../../models/Postagem';
 import { buscar } from '../../../services/Service';
-import CardPostagens from '../cardPostagens/CardPostagens';
 import { toastAlerta } from '../../../utils/toastAlerta';
+import CardPostagens from '../cardPortagens/CardPostagens';
 
 function ListaPostagens() {
   const [postagens, setPostagens] = useState<Postagem[]>([]);
@@ -55,7 +55,7 @@ function ListaPostagens() {
       )}
       <div className='container mx-auto my-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
         {postagens.map((postagem) => (
-          <CardPostagem key={postagem.id} post={postagem} />
+          <CardPostagens key={postagem.id} postagem={postagem} />
         ))}
       </div>
     </>

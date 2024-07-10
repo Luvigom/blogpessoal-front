@@ -3,6 +3,7 @@ import Tema from "../../../models/Tema";
 import { AuthContext } from "../../../contexts/AuthContext";
 import { useNavigate, useParams } from 'react-router-dom';
 import { buscar, deletar } from "../../../services/Service";
+import { toastAlerta } from "../../../utils/toastAlerta";
 
 function DeletarTema() {
   const [tema, setTema] = useState<Tema>({} as Tema)
